@@ -17,12 +17,12 @@ if 'screen' not in st.session_state:
     st.session_state.screen = 'home'
 
 # Sidebar for navigation
-st.sidebar.markdown('<span class="sidebar-header">Navegación</span>', unsafe_allow_html=True)
-if st.sidebar.button("Inicio", key="home_button"):
+st.sidebar.markdown('<span class="sidebar-header">Menu</span>', unsafe_allow_html=True)
+if st.sidebar.button("Home", key="home_button"):
     st.session_state.screen = 'home'
-if st.sidebar.button("Analizar Texto", key="predict_button"):
+if st.sidebar.button("Text-based prediction", key="predict_button"):
     st.session_state.screen = 'predict'
-if st.sidebar.button("Analizar Video de YouTube", key="link_prediction_button"):
+if st.sidebar.button("YouTube Comment Prediction", key="link_prediction_button"):
     st.session_state.screen = 'link_prediction'
 
 # Display appropriate screen based on session state
