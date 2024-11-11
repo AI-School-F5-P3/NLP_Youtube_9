@@ -185,18 +185,22 @@ def display_prediction(prediction_info):
 def predict_text(text):
     """Predicts the classification for a single text input with translation and preprocessing."""
     try:
-        translated_text = translate_text(text)
+        # Translate the text
+        translated_text, detected_language = translate_text(text)  # unpack the tuple
 
+        # Now preprocess the translated text
         processed_text = preprocess_text(translated_text)
         
-        # Step 3: Load the model
+        # Load the model
         classifier = load_model()
         if classifier is None:
             return "Error: Model could not be loaded."
 
-        result = classify_comment(processed_text, classifier)
+        result = classify_comment({'processed_text': processed_text, 'detected_language': detected_language}, classifier)
         if result is None:
             return "Error: Classification failed."
+        
+        # Display prediction results
         display_prediction(result)
     
     except Exception as e:

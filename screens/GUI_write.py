@@ -17,19 +17,20 @@ def write_screen():
     # Text input area
     st.markdown('### Enter your message', unsafe_allow_html=True)
     user_text = st.text_area("", height=75)
-    
-    # Prediction button
-    if st.button('Make Prediction'):
-        if user_text:
-            # Get prediction from model
-            prediction = predict_text(user_text)
+    col1, col2 = st.columns(2)
+    with col1:
+        # Prediction button
+        if st.button('Make Prediction'):
+            if user_text:
+                # Get prediction from model
+                prediction = predict_text(user_text)
 
-        else:
-            st.warning('Please enter some text to make a prediction.')
-    
-    # Return to home button
-    if st.button('Back to Home'):
-        st.session_state.screen = 'home'
+            else:
+                st.warning('Please enter some text to make a prediction.')
+    with col2:   
+        # Return to home button
+        if st.button('Back to Home'):
+            st.session_state.screen = 'home'
 
 if __name__ == "__main__":
     write_screen()
