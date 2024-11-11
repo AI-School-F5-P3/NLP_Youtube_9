@@ -13,7 +13,7 @@ data_dir = os.path.join(current_dir, '..', 'data')
 data_path = os.path.join(data_dir, 'preprocessed_data.csv')
 vector_path = os.path.join(data_dir, 'tfidf_vectorizer.joblib')
 
-models_dir = os.path.join(current_dir, '..', 'models')
+models_dir = os.path.join(current_dir, '..', 'models', 'trained')
 model_path = os.path.join(models_dir, 'nb_hatespeech_model.joblib')
 
 df = pd.read_csv(data_path)
