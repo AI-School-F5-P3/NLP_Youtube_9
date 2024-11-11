@@ -1,0 +1,189 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+/* General styles */
+body {
+    color: white !important;
+    background-color: #181818; /* Dark grey background, close to black */
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.title {
+    font-family: 'Roboto', sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+    margin-top: 20px;
+}
+
+/* Header */
+.stApp > header {
+    background-color: #181818 !important; /* Dark grey background for header */
+}
+
+/* Streamlit App Container */
+.stApp {
+    background-color: #181818;
+}
+
+/* Main content area */
+.main {
+    background-color: #181818;
+    color: white !important;
+}
+
+/* Ensure that all elements have the correct background */
+div[data-testid="stToolbar"],
+div[data-testid="stDecoration"],
+div[data-testid="stStatusWidget"] {
+    background-color: #181818 !important;
+}
+
+/* Centered header (e.g., for titles or sections) */
+.centered-header {
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* Button Styles */
+.stButton>button {
+    background-color: #FF0000; /* YouTube-like red for buttons */
+    color: white !important;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.stButton>button:hover {
+    background-color: #e60000; /* Darker red on hover */
+}
+
+.stButton>button:active {
+    background-color: #cc0000; /* Even darker red on click */
+}
+
+/* Sidebar Styles */
+.stSidebar {
+    background-color: #181818; /* Dark grey for sidebar */
+    color: white;
+}
+
+/* Sidebar navigation items */
+.stSidebar [data-testid="stSidebarNav"] {
+    background-color: #181818;
+}
+
+.stSidebar [data-testid="stSidebarNav"] button {
+    color: #FF0000 !important;
+    background-color: transparent;
+    border: none;
+}
+
+.stSidebar [data-testid="stSidebarNav"] button:hover {
+    background-color: #3a3a3a; /* Dark grey on hover */
+}
+
+.stSidebar [data-testid="stSidebarNav"] span {
+    color: #FF0000 !important;
+}
+
+.stSidebar [data-testid="stSidebarNav"] svg {
+    color: #FF0000 !important;
+}
+
+/* Service box */
+.service-box {
+    background-color: #333333; /* Dark grey background for service boxes */
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    color: white !important;
+}
+
+/* Selectbox styling */
+div[data-baseweb="select"] > div {
+    background-color: #FF0000 !important; /* Red selectbox */
+    color: white !important;
+}
+
+div[data-baseweb="select"] svg {
+    color: white !important;
+}
+
+div[data-baseweb="popover"] {
+    background-color: #FF0000 !important; /* Red popover */
+    color: white !important;
+}
+
+div[data-baseweb="popover"] ul {
+    background-color: #FF0000 !important;
+    color: white !important;
+}
+
+div[data-baseweb="popover"] li {
+    color: white !important;
+}
+
+div[data-baseweb="popover"] li:hover,
+div[data-baseweb="popover"] li[aria-selected="true"] {
+    background-color: #e60000 !important; /* Darker red on hover */
+    color: white !important;
+}
+
+/* Recommendation boxes (like YouTube's video recommendations) */
+.recommendation-high {
+    background-color: #FF0000; /* Red background for high-priority recommendations */
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.recommendation-low {
+    background-color: #4CAF50; /* Green for low priority recommendations */
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+/* Logo container */
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.logo-container img {
+    max-width: 150px;
+}
+
+/* Ensure all text is white */
+.big-font, .medium-font, p, h1, h2, h3, h4, h5, h6 {
+    color: white !important;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    background-color: #181818;
+    color: white;
+    padding: 20px;
+}
+
+footer a {
+    color: #FF0000;
+}
+
+/* Hover effect for all clickable links */
+a:hover {
+    color: #FF0000;
+}
