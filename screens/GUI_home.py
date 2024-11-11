@@ -4,12 +4,8 @@ from screens.aux_functions import load_css, load_image
 def home_screen():
     load_css('style.css')
 
-    # Sidebar for navigation
-    st.sidebar.title("Navegación")
-    screen = st.sidebar.radio("Selecciona una pantalla:", ['Inicio', 'Analizar Texto', 'Analizar Video de YouTube'])
-
     # Logo
-    st.markdown('<div class="logo-container">', unsafe_allow_html=True)
+    st.markdown('<div style="text-align: center;">', unsafe_allow_html=True)
     image = load_image('logo.png')
     st.image(image, width=150)
     st.markdown('</div>', unsafe_allow_html=True)

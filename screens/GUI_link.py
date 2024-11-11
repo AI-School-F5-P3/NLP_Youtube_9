@@ -1,9 +1,14 @@
 import streamlit as st
-from screens.aux_functions import load_css, predict_youtube_comments
+from screens.aux_functions import load_css, predict_youtube_comments, load_image
 
 def link_screen():
     load_css('style.css')
     
+    st.markdown('<div class="logo-container">', unsafe_allow_html=True)
+    image = load_image('logo.png')
+    st.image(image, width=150)
+    st.markdown('</div>', unsafe_allow_html=True)
+
     # Header
     st.markdown('<div style="text-align: center;">', unsafe_allow_html=True)
     st.markdown('## Predicción de Comentarios de YouTube', unsafe_allow_html=True)
