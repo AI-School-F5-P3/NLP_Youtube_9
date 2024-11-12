@@ -14,7 +14,10 @@ from torch.utils.data import Dataset
 mlflow.start_run()
 
 current_dir = os.getcwd()
-df = pd.read_csv('preprocessed_data_novector.csv')
+data_dir = os.path.join(current_dir, '..', 'data')
+file_path = os.path.join(data_dir, 'preprocessed_data_novector.csv'
+
+df = pd.read_csv(file_path)
 
 train_df, val_df = train_test_split(df, test_size=0.2, random_state=42)
 

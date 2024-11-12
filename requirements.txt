@@ -35,3 +35,13 @@ tokenizers==0.20.3
 torch==2.4.1
 transformers==4.46.2
 uvicorn==0.30.1
+
+
+# Firebase and Google API dependencies
+firebase-admin==6.2.0  # For Firebase Admin SDK, including Firestore
+google-auth==2.23.3  # For Google Authentication
+google-auth-oauthlib==1.0.0  # If using OAuth-based Google APIs
+google-api-python-client==2.103.0  # For using Google API Client (e.g., for custom Google APIs)
+
+# Google Translate API
+googletrans==4.0.0-rc1  # Translator library for Google Translate
