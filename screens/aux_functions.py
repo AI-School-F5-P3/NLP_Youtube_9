@@ -126,7 +126,7 @@ def load_model():
     """Loads the BERT model for text classification."""
     try:
         project_root = get_project_root()
-        model_path = os.path.join(project_root, 'models', 'fine_tuned_hate_speech_model')
+        model_path = os.path.join(project_root, 'models', 'fine_tuned_hate_speech_model_2')
         model = BertForSequenceClassification.from_pretrained(model_path)
         tokenizer = BertTokenizer.from_pretrained(model_path)
         classifier = pipeline("text-classification", model=model, tokenizer=tokenizer)
