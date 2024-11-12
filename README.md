@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="screens/images/logo.png" alt="Proyecto Logo" width="200"/>
+  <img src="screens/images/logo_bg.png" alt="Proyecto Logo" width="200"/>
 </p>
 
 # NLP Proyecto - Grupo 9
