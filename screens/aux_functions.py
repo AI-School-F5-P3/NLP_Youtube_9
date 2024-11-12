@@ -143,7 +143,7 @@ def get_prediction_message(label, score):
     else:
         category = 'Toxic'
         message = "This comment may contain toxic or inappropriate content"
-    confidence_level = "high" if score > 0.8 else "moderate" if score > 0.6 else "low"
+    confidence_level = "high" if score > 0.75 else "moderate" if score > 0.6 else "low"
     return {
         'category': category,
         'message': message,
@@ -186,19 +186,29 @@ def predict_text(text):
     """Predicts the classification for a single text input with translation and preprocessing."""
     try:
         # Translate the text
-        translated_text, detected_language = translate_text(text)  # unpack the tuple
-
-        # Now preprocess the translated text
+        translated_text, detected_language = translate_text(text)
         processed_text = preprocess_text(translated_text)
         
-        # Load the model
         classifier = load_model()
         if classifier is None:
             return "Error: Model could not be loaded."
 
-        result = classify_comment({'processed_text': processed_text, 'detected_language': detected_language}, classifier)
+        result = classify_comment({
+            'processed_text': processed_text, 
+            'detected_language': detected_language
+        }, classifier)
+        
         if result is None:
             return "Error: Classification failed."
+        
+        # Save prediction to Firebase if manager is available
+        if 'firebase_manager' in st.session_state:
+            source_info = {
+                'type': 'direct_text',
+                'content': text  # Original input text
+            }
+            if st.session_state.firebase_manager.save_prediction(result, source_info):
+                st.success("Prediction saved to database!")
         
         # Display prediction results
         display_prediction(result)
@@ -207,7 +217,6 @@ def predict_text(text):
         st.error(f"Error during prediction: {str(e)}")
         return None
 
-    
 def predict_youtube_comments(youtube_url):
     """Predicts classifications for comments from a YouTube video."""
     try:
@@ -226,6 +235,15 @@ def predict_youtube_comments(youtube_url):
         for comment_info in comments:
             prediction = classify_comment(comment_info, classifier)
             if prediction:
+                # Save to Firebase if manager is available
+                if 'firebase_manager' in st.session_state:
+                    source_info = {
+                        'type': 'youtube_comment',
+                        'content': comment_info['processed_text'],
+                        'video_id': video_id
+                    }
+                    st.session_state.firebase_manager.save_prediction(prediction, source_info)
+                
                 display_prediction(prediction)
                 
     except Exception as e:

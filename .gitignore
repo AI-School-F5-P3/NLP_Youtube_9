@@ -165,3 +165,6 @@ logs/
 mlruns/
 results/
 fine_tuned_hate_speech_model/
+fine_tuned_hate_speech_model_2/
+serviceAccountKey.json
+models/preprocessed_data_novector.csv

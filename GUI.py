@@ -3,12 +3,21 @@ from screens.GUI_home import home_screen
 from screens.GUI_write import write_screen
 from screens.GUI_link import link_screen
 from screens.aux_functions import load_css
-
+from firebase_utils import FirebaseManager  # Import the FirebaseManager class
+        
 st.set_page_config(
     page_title="No Hate Zone",
     page_icon="✋",
     layout="wide"
 )
+
+# Initialize Firebase manager in session state if not already present
+if 'firebase_manager' not in st.session_state:
+    try:
+        st.session_state.firebase_manager = FirebaseManager()
+        st.success("Firebase connection established!")
+    except Exception as e:
+        st.error(f"Error connecting to Firebase: {str(e)}")
 
 load_css('style.css')
 

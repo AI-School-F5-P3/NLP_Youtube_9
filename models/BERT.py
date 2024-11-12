@@ -1,18 +1,20 @@
 import pandas as pd
+import numpy as np
 import torch
-from transformers import BertTokenizer, BertForSequenceClassification, Trainer, TrainingArguments
+from transformers import BertTokenizer, BertForSequenceClassification, Trainer, TrainingArguments, EarlyStoppingCallback
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, f1_score
+from sklearn.utils.class_weight import compute_class_weight
+from torch.nn import CrossEntropyLoss
 import os
-
-import torch
+import mlflow
+import mlflow.pytorch
 from torch.utils.data import Dataset
 
-current_dir = os.getcwd()
-data_dir = os.path.join(current_dir, '..', 'data')
-file_path = os.path.join(data_dir, 'preprocessed_data_novector.csv')
+mlflow.start_run()
 
-df = pd.read_csv(file_path)
+current_dir = os.getcwd()
+df = pd.read_csv('preprocessed_data_novector.csv')
 
 train_df, val_df = train_test_split(df, test_size=0.2, random_state=42)
 
@@ -24,12 +26,11 @@ val_labels = val_df['IsHateSpeech'].tolist()
 
 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 
-# Tokenize the training data
+# Tokenize the training and validation data
 train_encodings = tokenizer(train_texts, truncation=True, padding=True, max_length=128)
-
-# Tokenize the validation data
 val_encodings = tokenizer(val_texts, truncation=True, padding=True, max_length=128)
 
+# Dataset class
 class HateSpeechDataset(Dataset):
     def __init__(self, encodings, labels):
         self.encodings = encodings
@@ -43,23 +44,49 @@ class HateSpeechDataset(Dataset):
     def __len__(self):
         return len(self.labels)
 
-# Create the dataset objects
+# Create dataset objects
 train_dataset = HateSpeechDataset(train_encodings, train_labels)
 val_dataset = HateSpeechDataset(val_encodings, val_labels)
 
-model = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=2)
+# Define class weights and convert to tensor
+class_weights = compute_class_weight('balanced', classes=np.array([0, 1]), y=train_labels)
+class_weights = torch.tensor(class_weights, dtype=torch.float)
 
+# Custom model with class-weighted loss
+class WeightedBertForSequenceClassification(BertForSequenceClassification):
+    def __init__(self, config, class_weights):
+        super().__init__(config)
+        self.class_weights = class_weights
+
+    def forward(self, input_ids=None, attention_mask=None, labels=None, **kwargs):
+        outputs = super().forward(input_ids=input_ids, attention_mask=attention_mask, labels=labels, **kwargs)
+        logits = outputs.logits
+        if labels is not None:
+            # Apply class weights to loss
+            loss_fct = CrossEntropyLoss(weight=self.class_weights)
+            loss = loss_fct(logits.view(-1, self.config.num_labels), labels.view(-1))
+            outputs = (loss,) + outputs[1:]
+        return outputs
+
+# Instantiate the model with class weights
+model = WeightedBertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=2, class_weights=class_weights)
+
+# Define training arguments
 training_args = TrainingArguments(
     output_dir='./results',
-    num_train_epochs=3,
-    per_device_train_batch_size=8,
+    num_train_epochs=6,
+    per_device_train_batch_size=16,
     per_device_eval_batch_size=16,
+    learning_rate=3e-5,
     warmup_steps=500,
-    weight_decay=0.01,
+    weight_decay=0.02,
     logging_dir='./logs',
-    evaluation_strategy="epoch",
+    eval_strategy="epoch",  # Evaluate at the end of each epoch
+    save_strategy="epoch",
+    load_best_model_at_end=True,
 )
 
+# Define metric computation
 def compute_metrics(pred):
     labels = pred.label_ids
     preds = pred.predictions.argmax(-1)
@@ -67,17 +94,31 @@ def compute_metrics(pred):
     f1 = f1_score(labels, preds)
     return {'accuracy': acc, 'f1': f1}
 
+# Initialize trainer with early stopping callback
 trainer = Trainer(
     model=model,
     args=training_args,
     train_dataset=train_dataset,
     eval_dataset=val_dataset,
     compute_metrics=compute_metrics,
+    callbacks=[EarlyStoppingCallback(early_stopping_patience=2)]
 )
 
 # Train the model
 trainer.train()
 
-save_path = os.path.join(current_dir, 'fine_tuned_hate_speech_model')
+# Save model and tokenizer
+save_path = os.path.join(current_dir, 'fine_tuned_hate_speech_model_3')
 model.save_pretrained(save_path)
 tokenizer.save_pretrained(save_path)
+
+# Log metrics to MLflow
+eval_result = trainer.evaluate()
+mlflow.log_metric('accuracy', eval_result['eval_accuracy'])
+mlflow.log_metric('f1_score', eval_result['eval_f1'])
+
+# Log model to MLflow
+mlflow.pytorch.log_model(model, "model")
+
+# End the MLflow run
+mlflow.end_run()
