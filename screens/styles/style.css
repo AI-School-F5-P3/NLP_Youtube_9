@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+/* General styles */
+body {
+    color: white !important;
+    background-color: #2E343D; /* Dark grey background, close to black */
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.title {
+    font-family: 'Roboto', sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+    margin-top: 20px;
+}
+
+/* Header */
+.stApp > header {
+    background-color: #2E343D !important; /* Dark grey background for header */
+}
+
+/* Streamlit App Container */
+.stApp {
+    background-color: #2E343D;
+}
+
+/* Main content area */
+.main {
+    background-color: #2E343D;
+    color: white !important;
+}
+
+/* Ensuring correct background for important elements with more specific selectors */
+div[data-testid="stToolbar"] {
+    background-color: #2E343D !important;
+}
+
+div[data-testid="stDecoration"] {
+    background-color: #2E343D !important;
+}
+
+div[data-testid="stSidebar"] {
+    background-color: #2E343D !important;
+}
+
+div[data-testid="stStatusWidget"] {
+    background-color: #2E343D !important;
+}
+
+/* Centered header (e.g., for titles or sections) */
+.centered-header {
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* Button Styles */
+.stButton>button {
+    background-color: #DB112A; /* YouTube-like red for buttons */
+    color: white !important;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.stButton>button:hover {
+    background-color: #AF0D22; /* Darker red on hover */
+}
+
+.stButton>button:active {
+    background-color: #990C1D; /* Even darker red on click */
+}
+
+.sidebar-background {
+    background-color: #2E343D !important;
+    border-right: 1px solid #990C1D; /* Add border between sidebar and main content */
+}
+
+/* Ensure all text is white, except for sidebar header */
+p, h1, h2, h3, h4, h5, h6 {
+    color: white !important;
+}
+
+.sidebar-header {
+    color: #2E343D !important;
+    font-size: 24px !important;
+    font-weight: bold !important;
+    text-align: center;
+    padding: 10px 0;
+}
+
+
+/* Ensure all sidebar items inherit the right background */
+.stSidebar [data-testid="stSidebarNav"] {
+    background-color: #2E343D !important;
+    color: white !important;
+}
+
+/* Logo container */
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.logo-container img {
+    max-width: 150px;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    background-color: #2E343D;
+    color: white;
+    padding: 20px;
+}
+
+footer a {
+    color: #DB112A;
+}
+
+/* Hover effect for all clickable links */
+a:hover {
+    color: #DB112A;
+}
