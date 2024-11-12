@@ -4,7 +4,9 @@
 
 # NLP Project - Group 9
 
-## No Hate Zone: Using BERT, we analyze text to detect hate speech and potentially harmful content.
+## No Hate Zone:
+
+Using BERT, we analyze text to detect hate speech and potentially harmful content.
 
 ---
 
@@ -12,7 +14,7 @@
 
 ### 1. **User Interface**
    - **Streamlit**
-   - 
+
 ### 2. **Natural Language Processing (NLP) and Machine Learning**
    - **Transformers (Hugging Face)**: Used to work with pre-trained language models, such as BERT, for text classification. Tools used include `BertTokenizer`, `BertForSequenceClassification` and `pipeline`.
    - **NLTK (Natural Language Toolkit)**
