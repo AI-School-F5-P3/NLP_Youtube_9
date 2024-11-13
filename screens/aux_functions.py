@@ -6,9 +6,6 @@ from dotenv import load_dotenv
 from PIL import Image
 from urllib.parse import urlparse, parse_qs
 import re
-from PIL import Image
-from urllib.parse import urlparse, parse_qs
-import re
 import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
@@ -242,7 +239,8 @@ def predict_youtube_comments(youtube_url):
                         'content': comment_info['processed_text'],
                         'video_id': video_id
                     }
-                    st.session_state.firebase_manager.save_prediction(prediction, source_info)
+                    if st.session_state.firebase_manager.save_prediction(prediction, source_info):
+                        st.success("Prediction saved to database!")
                 
                 display_prediction(prediction)
                 

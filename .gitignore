@@ -164,6 +164,7 @@ cython_debug/
 logs/
 mlruns/
 results/
+secrets/
 fine_tuned_hate_speech_model/
 fine_tuned_hate_speech_model_2/
 serviceAccountKey.json
