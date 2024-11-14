@@ -4,7 +4,8 @@ FROM python:3.12-slim
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     DEBIAN_FRONTEND=noninteractive \
-    NLTK_DATA=/usr/local/share/nltk_data
+    NLTK_DATA=/usr/local/share/nltk_data\
+    PORT=8080
 
 WORKDIR /app
 
@@ -37,15 +38,15 @@ COPY secrets/serviceAccountKey.json /app/serviceAccountKey.json
 # Copy application code
 COPY . .
 
-# Expose Streamlit port
-EXPOSE 8501
+# Expose the dynamic port specified by Cloud Run
+EXPOSE $PORT
 
-# Create run script with proper error handling
-RUN echo '#!/bin/bash\nset -e\nstreamlit run GUI.py --server.port 8501 --server.address 0.0.0.0' > run.sh && \
+# Create run script to use the Cloud Run port environment variable
+RUN echo '#!/bin/bash\nset -e\nstreamlit run GUI.py --server.port $PORT --server.address 0.0.0.0' > run.sh && \
     chmod +x run.sh
 
 # Add healthcheck
-HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health || exit 1
+HEALTHCHECK CMD curl --fail http://localhost:$PORT/_stcore/health || exit 1
 
 # Run the application
 CMD ["./run.sh"]
