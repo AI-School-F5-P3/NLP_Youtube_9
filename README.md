@@ -10,7 +10,12 @@ Using BERT, we analyze text to detect hate speech and potentially harmful conten
 
 ---
 
-<a href="https://nohate-zone-428739527657.europe-southwest1.run.app/" target="_blank" style="display: inline-block; padding: 8px 16px; font-size: 16px; color: white; background-color: #DB112A; text-align: center; text-decoration: none; border-radius: 4px;">Visit App</a>
+[![Visit App](https://img.shields.io/badge/Visit%20App-DB112A?style=for-the-badge&logo=appveyor&logoColor=white)](https://nohate-zone-428739527657.europe-southwest1.run.app/)
+
+
+---
+
+[![Presentation](https://img.shields.io/badge/Presentation-DB112A?style=for-the-badge&logo=canva&logoColor=white)](https://www.canva.com/design/DAGWwPEIRE8/8QvMXl1lTQIKuPSvyJERdQ/edit?utm_content=DAGWwPEIRE8&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
 ---
 
