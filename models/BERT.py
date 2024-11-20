@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import torch
-from transformers import BertTokenizer, BertForSequenceClassification, Trainer, TrainingArguments, EarlyStoppingCallback
+from transformers import BertTokenizer, BertForSequenceClassification, Trainer, TrainingArguments, TrainerCallback, EarlyStoppingCallback
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, f1_score
 from sklearn.utils.class_weight import compute_class_weight
@@ -10,12 +10,43 @@ import os
 import mlflow
 import mlflow.pytorch
 from torch.utils.data import Dataset
+import matplotlib.pyplot as plt
 
-mlflow.start_run()
+class MetricsCallback(TrainerCallback):
+    def __init__(self):
+        self.metrics = {'accuracy': [], 'f1': [], 'epoch': []}
+        
+    def on_evaluate(self, args, state, control, metrics=None, **kwargs):
+        if metrics:
+            self.metrics['accuracy'].append(metrics.get('eval_accuracy'))
+            self.metrics['f1'].append(metrics.get('eval_f1'))
+            self.metrics['epoch'].append(state.epoch)
+    
+    def plot_metrics(self):
+        plt.figure(figsize=(10, 5))
+        # Accuracy plot
+        plt.subplot(1, 2, 1)
+        plt.plot(self.metrics['epoch'], self.metrics['accuracy'], label='Accuracy', marker='o')
+        plt.title('Accuracy Over Epochs')
+        plt.xlabel('Epoch')
+        plt.ylabel('Accuracy')
+        plt.grid(True)
+        plt.legend()
+        
+        # F1 Score plot
+        plt.subplot(1, 2, 2)
+        plt.plot(self.metrics['epoch'], self.metrics['f1'], label='F1 Score', marker='o', color='orange')
+        plt.title('F1 Score Over Epochs')
+        plt.xlabel('Epoch')
+        plt.ylabel('F1 Score')
+        plt.grid(True)
+        plt.legend()
+        plt.tight_layout()
+        plt.show()
 
 current_dir = os.getcwd()
 data_dir = os.path.join(current_dir, '..', 'data')
-file_path = os.path.join(data_dir, 'preprocessed_data_novector.csv'
+file_path = os.path.join(data_dir, 'preprocessed_data_novector.csv')
 
 df = pd.read_csv(file_path)
 
@@ -96,6 +127,8 @@ def compute_metrics(pred):
     acc = accuracy_score(labels, preds)
     f1 = f1_score(labels, preds)
     return {'accuracy': acc, 'f1': f1}
+
+metrics_callback = MetricsCallback()
 
 # Initialize trainer with early stopping callback
 trainer = Trainer(
