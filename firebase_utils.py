@@ -9,7 +9,7 @@ class FirebaseManager:
     def __init__(self):
         # Initialize Firebase if not already initialized
         if not firebase_admin._apps:
-            cred = credentials.Certificate(os.path.join(os.path.dirname(__file__), 'serviceAccountKey.json'))
+            cred = credentials.Certificate(os.path.join(os.path.dirname(__file__), 'secrets', 'serviceAccountKey.json'))
             firebase_admin.initialize_app(cred)
         
         self.db = firestore.client()
